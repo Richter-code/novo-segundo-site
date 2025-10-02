@@ -1,0 +1,2 @@
+- Scaffold inicial gerado automaticamente pelo assistente.
+- Contém instruções no README.md sobre como instalar dependências e rodar o projeto.
