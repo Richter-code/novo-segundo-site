@@ -17,6 +17,8 @@
   "prisma:push": "prisma db push",
   "prisma:seed": "ts-node --transpile-only prisma/seed.ts",
   "health": "curl -fsS http://localhost:3000/api/health || echo 'server down'",
+    "sitemap": "next-sitemap",
+    "postbuild": "next-sitemap",
     "prepare": "husky install"
   },
   "dependencies": {
