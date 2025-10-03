@@ -70,9 +70,12 @@ export default function RootLayout({ children }: { children: ReactNode }) {
     <html lang="pt-BR">
       <body>
         <Providers>
+          <a href="#content" className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 bg-primary text-primary-foreground px-3 py-2 rounded z-50">
+            Pular para o conteúdo
+          </a>
           <div className="min-h-screen flex flex-col bg-background text-foreground">
             <Navbar />
-            <main className="container mx-auto px-6 py-10 flex-1">{children}</main>
+            <main id="content" className="container mx-auto px-6 py-10 flex-1">{children}</main>
             <Footer />
           </div>
         </Providers>

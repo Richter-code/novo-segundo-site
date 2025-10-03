@@ -4,14 +4,22 @@ module.exports = {
   generateRobotsTxt: true,
   exclude: ['/admin', '/login', '/assistant'],
   additionalPaths: async (config) => [
-    await config.transform(config, '/'),
-    await config.transform(config, '/about'),
-    await config.transform(config, '/services'),
-    await config.transform(config, '/products'),
-    await config.transform(config, '/units'),
-    await config.transform(config, '/reviews'),
-    await config.transform(config, '/contact'),
-    await config.transform(config, '/blog'),
+    // Provide explicit priority and changefreq per important page
+    ...(
+      await Promise.all([
+        { loc: '/', priority: 1.0, changefreq: 'daily' },
+        { loc: '/about', priority: 0.7, changefreq: 'monthly' },
+        { loc: '/services', priority: 0.8, changefreq: 'weekly' },
+        { loc: '/products', priority: 0.8, changefreq: 'weekly' },
+        { loc: '/units', priority: 0.6, changefreq: 'monthly' },
+        { loc: '/reviews', priority: 0.5, changefreq: 'monthly' },
+        { loc: '/contact', priority: 0.6, changefreq: 'monthly' },
+        { loc: '/blog', priority: 0.5, changefreq: 'weekly' },
+      ].map(async (p) => {
+        const entry = await config.transform(config, p.loc)
+        return { ...entry, priority: p.priority, changefreq: p.changefreq }
+      }))
+    ),
   ],
   robotsTxtOptions: {
     policies: [

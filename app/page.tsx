@@ -1,5 +1,5 @@
-import Link from 'next/link'
 import Card from '../components/Card'
+import Button from '../components/Button'
 import { PawPrint, Waves, Leaf, MessageCircle, MapPin } from 'lucide-react'
 
 export const metadata = {
@@ -40,21 +40,19 @@ export default function Home() {
             Conte com nossas 7 lojas, veterinários parceiros, banho & tosa e entrega em domicílio.
           </p>
           <div className="mt-6 flex flex-col sm:flex-row gap-3">
-            <Link
+            <Button
               href={`https://wa.me/${wa}?text=${waText}`}
-              aria-label="Fale no WhatsApp com a Agro Mané"
-              className="inline-flex items-center justify-center gap-2 rounded-md bg-primary text-primary-foreground px-5 py-3 text-sm font-medium shadow hover:opacity-95"
               target="_blank"
               rel="noopener noreferrer"
+              className="text-sm"
             >
-              <MessageCircle className="h-4 w-4" aria-hidden /> Fale no WhatsApp
-            </Link>
-            <Link
-              href="/units"
-              className="inline-flex items-center justify-center gap-2 rounded-md border px-5 py-3 text-sm font-medium hover:bg-muted/50"
-            >
-              <MapPin className="h-4 w-4" aria-hidden /> Conheça as Lojas
-            </Link>
+              <MessageCircle className="h-4 w-4" aria-hidden />
+              <span>Fale no WhatsApp</span>
+            </Button>
+            <Button href="/units" variant="secondary" className="text-sm inline-flex items-center">
+              <MapPin className="h-4 w-4 mr-2" aria-hidden />
+              Conheça as Lojas
+            </Button>
           </div>
         </div>
       </section>
