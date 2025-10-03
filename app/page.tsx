@@ -1,6 +1,6 @@
 import Link from 'next/link'
 import Card from '../components/Card'
-import { PawPrint, Waves, Leaf } from 'lucide-react'
+import { PawPrint, Waves, Leaf, MessageCircle, MapPin } from 'lucide-react'
 
 export const metadata = {
   title: 'Agro Mané — Tudo para Pet, Piscina e Jardim',
@@ -19,11 +19,15 @@ export const metadata = {
 }
 
 export default function Home() {
+  const wa = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || '5519999990000'
+  const waText = encodeURIComponent('Olá! Gostaria de mais informações sobre produtos e serviços da Agro Mané.')
   return (
     <div className="space-y-10">
       {/* Hero */}
-      <section aria-label="Hero — Agro Mané" className="rounded-xl p-8 md:p-12 bg-gradient-to-br from-green-50 to-emerald-100 dark:from-emerald-900/40 dark:to-green-800/30 border">
-        <div className="max-w-4xl">
+      <section aria-label="Hero — Agro Mané" className="relative overflow-hidden rounded-xl p-8 md:p-12 bg-gradient-to-br from-green-50 to-emerald-100 dark:from-emerald-900/40 dark:to-green-800/30 border">
+        <div className="pointer-events-none absolute -right-24 -top-24 h-64 w-64 rounded-full bg-emerald-500/10 blur-3xl" />
+        <div className="pointer-events-none absolute -left-24 -bottom-24 h-64 w-64 rounded-full bg-green-600/10 blur-3xl" />
+        <div className="relative max-w-4xl">
           <span className="inline-flex items-center gap-2 mb-3 rounded-full border px-3 py-1 text-xs md:text-sm bg-white/70 dark:bg-black/20">
             <span className="h-2 w-2 rounded-full bg-emerald-600" aria-hidden />
             30+ anos de tradição em Piracicaba
@@ -37,17 +41,19 @@ export default function Home() {
           </p>
           <div className="mt-6 flex flex-col sm:flex-row gap-3">
             <Link
-              href="/contact"
-              aria-label="Fale no WhatsApp ou pelo formulário"
-              className="inline-flex items-center justify-center rounded-md bg-primary text-primary-foreground px-5 py-3 text-sm font-medium shadow hover:opacity-95"
+              href={`https://wa.me/${wa}?text=${waText}`}
+              aria-label="Fale no WhatsApp com a Agro Mané"
+              className="inline-flex items-center justify-center gap-2 rounded-md bg-primary text-primary-foreground px-5 py-3 text-sm font-medium shadow hover:opacity-95"
+              target="_blank"
+              rel="noopener noreferrer"
             >
-              Fale no WhatsApp
+              <MessageCircle className="h-4 w-4" aria-hidden /> Fale no WhatsApp
             </Link>
             <Link
               href="/units"
-              className="inline-flex items-center justify-center rounded-md border px-5 py-3 text-sm font-medium hover:bg-muted/50"
+              className="inline-flex items-center justify-center gap-2 rounded-md border px-5 py-3 text-sm font-medium hover:bg-muted/50"
             >
-              Conheça as Lojas
+              <MapPin className="h-4 w-4" aria-hidden /> Conheça as Lojas
             </Link>
           </div>
         </div>

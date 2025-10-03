@@ -5,6 +5,7 @@ import Footer from '../components/Footer'
 import Providers from '../components/Providers'
 
 export const metadata = {
+  metadataBase: new URL(process.env.SITE_URL || 'http://localhost:3000'),
   title: 'Agro Mané — Tudo para Pet, Piscina e Jardim em Piracicaba',
   description:
     'Rede com 7 lojas em Piracicaba-SP. Rações, banho & tosa, veterinários, produtos para piscina, jardinagem e agro. Mais de 30 anos de tradição e qualidade.',
@@ -56,8 +57,10 @@ export const metadata = {
     google: 'your-google-verification-code',
   },
   icons: {
-    icon: '/favicon.svg',
-    shortcut: '/favicon.ico',
+    icon: [
+      { url: '/favicon.svg', type: 'image/svg+xml' },
+      { url: '/favicon.ico' },
+    ],
     apple: '/apple-touch-icon.png',
   },
 }

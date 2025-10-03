@@ -85,12 +85,22 @@ export default function UnitsPage() {
 
       <div className="grid gap-6 md:grid-cols-2">
         {units.map((unit) => (
-          <article key={unit.id} className="rounded-lg border p-5 space-y-3">
+          <article key={unit.id} className="rounded-lg border p-5 space-y-3 bg-card text-card-foreground">
             <h2 className="text-xl font-semibold">{unit.name}</h2>
             <div className="space-y-2 text-sm">
               <div className="flex items-start gap-2">
                 <MapPin className="h-4 w-4 text-muted-foreground mt-0.5 shrink-0" aria-hidden />
-                <span>{unit.address}</span>
+                <span>
+                  {unit.address}{' '}
+                  <a
+                    href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(unit.address)}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-primary hover:underline"
+                  >
+                    (ver no mapa)
+                  </a>
+                </span>
               </div>
               <div className="flex items-center gap-2">
                 <Phone className="h-4 w-4 text-muted-foreground shrink-0" aria-hidden />

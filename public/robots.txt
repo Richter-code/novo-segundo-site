@@ -1,0 +1,12 @@
+# *
+User-agent: *
+Allow: /
+Disallow: /admin
+Disallow: /login
+Disallow: /assistant
+
+# Host
+Host: https://agromane.com.br
+
+# Sitemaps
+Sitemap: https://agromane.com.br/sitemap.xml
