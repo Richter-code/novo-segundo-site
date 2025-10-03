@@ -13,6 +13,7 @@ export default function Navbar() {
     { href: '/about', label: 'Sobre' },
     { href: '/services', label: 'Serviços' },
     { href: '/products', label: 'Produtos' },
+    { href: '/units', label: 'Unidades' },
     { href: '/blog', label: 'Blog' },
     { href: '/contact', label: 'Contato' },
     { href: '/assistant', label: 'Assistente' },
@@ -22,7 +23,7 @@ export default function Navbar() {
     <header className="border-b border-border bg-background">
       <div className="container mx-auto px-6 py-4 flex items-center justify-between">
         <Link href="/" className="text-lg font-bold">
-          AgroAI
+          Agro Mané
         </Link>
         <nav className="hidden md:flex gap-4 items-center">
           {links.map((l) => (
