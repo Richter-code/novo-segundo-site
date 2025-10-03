@@ -9,3 +9,7 @@ pnpm-lock.yaml
 yarn.lock
 npm-debug.log
 .vscode/
+
+# Prisma local DB
+prisma/dev.db
+prisma/dev.db-journal

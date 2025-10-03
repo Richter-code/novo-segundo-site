@@ -1,4 +1,6 @@
 
+/* stylelint-disable */
+/* Tailwind directives - processed by PostCSS/Tailwind during build */
 @tailwind base;
 @tailwind components;
 @tailwind utilities;

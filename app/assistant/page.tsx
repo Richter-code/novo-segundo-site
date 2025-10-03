@@ -1,6 +1,4 @@
-import dynamic from 'next/dynamic'
-
-const AssistantChat = dynamic(() => import('../../components/AssistantChat'), { ssr: false })
+import AssistantClient from '../../components/AssistantClient'
 
 export const metadata = {
   title: 'Assistente — AgroAI',
@@ -12,7 +10,7 @@ export default function AssistantPage() {
     <div className="space-y-6">
       <h2 className="text-2xl font-bold">Assistente Virtual</h2>
       <p>Converse com nosso assistente para obter recomendações práticas.</p>
-      <AssistantChat />
+      <AssistantClient />
     </div>
   )
 }

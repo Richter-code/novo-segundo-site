@@ -14,9 +14,9 @@ export default function Navbar() {
     { href: '/services', label: 'Serviços' },
     { href: '/products', label: 'Produtos' },
     { href: '/units', label: 'Unidades' },
+    { href: '/reviews', label: 'Avaliações' },
     { href: '/blog', label: 'Blog' },
     { href: '/contact', label: 'Contato' },
-    { href: '/assistant', label: 'Assistente' },
   ]
 
   return (

@@ -5,9 +5,18 @@ import Footer from '../components/Footer'
 import Providers from '../components/Providers'
 
 export const metadata = {
-  title: 'AgroAI — Soluções para Agropecuária',
+  title: 'Agro Mané — Tudo para Pet, Piscina e Jardim em Piracicaba',
   description:
-    'AgroAI: consultoria e ferramentas digitais para agropecuária — assistência virtual, serviços e conteúdos técnicos.',
+    'Rede com 7 lojas em Piracicaba-SP. Rações, banho & tosa, veterinários, produtos para piscina, jardinagem e agro. Mais de 30 anos de tradição e qualidade.',
+  keywords: [
+    'pet shop Piracicaba',
+    'agropecuária Piracicaba',
+    'ração para cães e gatos',
+    'banho e tosa',
+    'tratamento de piscina',
+    'produtos para jardim',
+    'Agro Mané',
+  ],
 }
 
 export default function RootLayout({ children }: { children: ReactNode }) {

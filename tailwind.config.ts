@@ -1,7 +1,8 @@
-/* eslint-disable global-require */
-/* eslint-disable @typescript-eslint/no-var-requires */
-/* eslint-disable import/no-commonjs */
-module.exports = {
+import forms from '@tailwindcss/forms'
+import animate from 'tailwindcss-animate'
+import type { Config } from 'tailwindcss'
+
+const config: Config = {
   content: [
     './app/**/*.{ts,tsx,js,jsx}',
     './components/**/*.{ts,tsx,js,jsx}',
@@ -19,5 +20,7 @@ module.exports = {
       },
     },
   },
-  plugins: [require('@tailwindcss/forms'), require('tailwindcss-animate')],
+  plugins: [forms, animate],
 }
+
+export default config

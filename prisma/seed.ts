@@ -16,8 +16,8 @@ async function main() {
     create: {
       email: 'admin@example.com',
       name: 'Admin',
-      passwordHash
-    }
+      passwordHash,
+    },
   })
   await prisma.post.createMany({
     data: [
