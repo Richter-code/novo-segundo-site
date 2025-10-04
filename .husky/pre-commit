@@ -1,5 +1,7 @@
 #!/bin/sh
-. "$(dirname "$0")/_/husky.sh"
+# Resolve absolute directory of this hook and source husky helper
+HOOK_DIR="$(cd "$(dirname "$0")" && pwd)"
+. "$HOOK_DIR/_/husky.sh"
 
-npx lint-staged
+# Run lint-staged once
 npx --no -- lint-staged

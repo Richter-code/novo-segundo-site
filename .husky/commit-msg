@@ -1,5 +1,8 @@
-#!/bin/sh
-. "$(dirname "$0")/_/husky.sh"
 
+#!/bin/sh
+# Resolve absolute directory of this hook and source husky helper
+HOOK_DIR="$(cd "$(dirname \"$0\")" && pwd)"
+. "$HOOK_DIR/_/husky.sh"
+
+# Validate commit message
 npx --no -- commitlint --edit "$1"
-npx --no -- commitlint --format=github --edit 
