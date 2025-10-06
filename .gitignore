@@ -17,3 +17,5 @@ prisma/dev.db-journal
 # Ignore any SQLite databases
 *.db
 *.db-journal
+logs/
+public/sitemap-*.xml
