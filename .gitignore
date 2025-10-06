@@ -13,3 +13,9 @@ npm-debug.log
 # Prisma local DB
 prisma/dev.db
 prisma/dev.db-journal
+
+# Ignore any SQLite databases
+*.db
+*.db-journal
+logs/
+public/sitemap-*.xml
