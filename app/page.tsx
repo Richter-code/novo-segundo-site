@@ -31,11 +31,14 @@ export default async function Home() {
   const waText = encodeURIComponent(
     'Olá! Gostaria de mais informações sobre produtos e serviços da Agro Mané.',
   );
-  const featured = await prisma.product.findMany({
-    orderBy: { createdAt: 'desc' },
-    take: 8,
-    include: { category: true },
-  });
+  const [featured, categories] = await Promise.all([
+    prisma.product.findMany({
+      orderBy: { createdAt: 'desc' },
+      take: 8,
+      include: { category: true },
+    }),
+    prisma.category.findMany({ orderBy: { name: 'asc' }, take: 6 }),
+  ]);
   return (
     <div className="space-y-12">
       {/* Hero */}
@@ -136,6 +139,24 @@ export default async function Home() {
           </Card>
         </div>
       </section>
+
+      {categories.length > 0 && (
+        <section aria-label="Explore por categoria" className="space-y-3">
+          <h2 className="text-xl font-bold">Explore por categoria</h2>
+          <ul className="grid sm:grid-cols-2 md:grid-cols-3 gap-3">
+            {categories.map((c) => (
+              <li key={c.id}>
+                <a
+                  href={`/products?category=${encodeURIComponent(c.name)}`}
+                  className="block rounded border px-4 py-3 hover:bg-muted/40"
+                >
+                  <span className="font-medium">{c.name}</span>
+                </a>
+              </li>
+            ))}
+          </ul>
+        </section>
+      )}
 
       {/* Vitrine de Produtos */}
       <section aria-label="Destaques" className="space-y-3">
