@@ -1,0 +1,126 @@
+
+> novo-segundo-site@0.1.0 dev /home/davi/novo-segundo-site
+> next dev
+
+ ⚠ Warning: Next.js inferred your workspace root, but it may not be correct.
+ We detected multiple lockfiles and selected the directory of /home/davi/pnpm-lock.yaml as the root directory.
+ To silence this warning, set `outputFileTracingRoot` in your Next.js config, or consider removing one of the lockfiles if it's not needed.
+   See https://nextjs.org/docs/app/api-reference/config/next-config-js/output#caveats for more information.
+ Detected additional lockfiles: 
+   * /home/davi/novo-segundo-site/pnpm-lock.yaml
+
+   ▲ Next.js 15.5.4
+   - Local:        http://localhost:3000
+   - Network:      http://192.168.1.23:3000
+   - Environments: .env.local, .env
+
+ ✓ Starting...
+ ✓ Ready in 2.1s
+ ○ Compiling / ...
+ ✓ Compiled / in 2.1s (756 modules)
+ GET / 200 in 3325ms
+ ○ Compiling /api/auth/[...nextauth] ...
+ ✓ Compiled /api/auth/[...nextauth] in 1332ms (998 modules)
+ GET /api/auth/session 200 in 2576ms
+ GET / 200 in 457ms
+ ✓ Compiled in 1607ms (293 modules)
+ GET / 200 in 114ms
+ ○ Compiling /manifest.webmanifest ...
+ ✓ Compiled /manifest.webmanifest in 748ms (778 modules)
+ GET /manifest.webmanifest 200 in 1015ms
+ ✓ Compiled in 319ms (293 modules)
+ GET / 200 in 152ms
+ GET /manifest.webmanifest 200 in 27ms
+ ✓ Compiled in 350ms (293 modules)
+ GET / 200 in 89ms
+ GET /manifest.webmanifest 200 in 22ms
+ ✓ Compiled in 209ms (293 modules)
+ GET / 200 in 53ms
+ GET /manifest.webmanifest 200 in 19ms
+ ✓ Compiled in 177ms (293 modules)
+ GET / 200 in 75ms
+ GET /manifest.webmanifest 200 in 23ms
+ ✓ Compiled in 185ms (293 modules)
+ GET / 200 in 64ms
+ GET /manifest.webmanifest 200 in 28ms
+ ✓ Compiled in 215ms (293 modules)
+ ✓ Compiled in 179ms (293 modules)
+ GET / 200 in 330ms
+ GET / 200 in 63ms
+ GET /manifest.webmanifest 200 in 19ms
+ ✓ Compiled in 116ms (293 modules)
+ ⨯ SyntaxError: Unexpected end of JSON input
+    at JSON.parse (<anonymous>) {
+  page: '/'
+}
+ ○ Compiling /_error ...
+ ✓ Compiled /_error in 3.7s (1212 modules)
+ GET / 500 in 4291ms
+ GET / 200 in 167ms
+ GET / 200 in 41ms
+ GET / 200 in 41ms
+ GET / 200 in 454ms
+ ✓ Compiled /api/auth/[...nextauth] in 326ms (1017 modules)
+ GET /api/auth/session 200 in 664ms
+ ✓ Compiled in 326ms (445 modules)
+ GET / 200 in 172ms
+ GET /manifest.webmanifest 200 in 28ms
+ ✓ Compiled in 286ms (445 modules)
+ GET / 200 in 94ms
+ GET /manifest.webmanifest 200 in 17ms
+ ✓ Compiled in 234ms (445 modules)
+ GET / 200 in 44ms
+ GET /manifest.webmanifest 200 in 16ms
+ ✓ Compiled in 516ms (444 modules)
+ GET / 200 in 138ms
+ ✓ Compiled in 344ms (444 modules)
+ GET /manifest.webmanifest 200 in 150ms
+ GET / 200 in 143ms
+ GET /manifest.webmanifest 200 in 21ms
+ ✓ Compiled in 264ms (444 modules)
+ GET / 200 in 98ms
+ GET /manifest.webmanifest 200 in 31ms
+ ✓ Compiled in 267ms (444 modules)
+ GET / 200 in 100ms
+ GET /manifest.webmanifest 200 in 26ms
+ ✓ Compiled in 189ms (444 modules)
+ GET / 200 in 253ms
+ ✓ Compiled in 1348ms (1086 modules)
+ ✓ Compiled in 257ms (444 modules)
+ ✓ Compiled in 818ms (1086 modules)
+ ✓ Compiled in 611ms (444 modules)
+ ✓ Compiled in 323ms (444 modules)
+ ✓ Compiled in 257ms (444 modules)
+ ✓ Compiled in 322ms (444 modules)
+ ✓ Compiled in 245ms (444 modules)
+ ✓ Compiled in 275ms (444 modules)
+ ✓ Compiled in 302ms (444 modules)
+ ✓ Compiled in 292ms (444 modules)
+ ✓ Compiled in 274ms (444 modules)
+ ⚠ Found a change in next.config.js. Restarting the server to apply the changes...
+   ▲ Next.js 15.5.4
+   - Local:        http://localhost:3000
+   - Network:      http://192.168.1.23:3000
+   - Environments: .env.local, .env
+
+ ✓ Starting...
+ ✓ Ready in 3.3s
+ ⚠ Found a change in next.config.js. Restarting the server to apply the changes...
+(node:13190) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///home/davi/novo-segundo-site/next.config.js is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to /home/davi/novo-segundo-site/package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+file:///home/davi/novo-segundo-site/next.config.js:10
+  outputFileTracingRoot: path.join(__dirname),
+                                   ^
+
+ReferenceError: __dirname is not defined in ES module scope
+    at file:///home/davi/novo-segundo-site/next.config.js:10:36
+    at ModuleJob.run (node:internal/modules/esm/module_job:345:25)
+    at async onImport.tracePromise.__proto__ (node:internal/modules/esm/loader:665:26)
+    at async loadConfig (/home/davi/novo-segundo-site/node_modules/.pnpm/next@15.5.4_@babel+core@7.28.4_@opentelemetry+api@1.9.0_react-dom@19.2.0_react@19.2.0__react@19.2.0/node_modules/next/dist/server/config.js:1066:36)
+    at async getStartServerInfo (/home/davi/novo-segundo-site/node_modules/.pnpm/next@15.5.4_@babel+core@7.28.4_@opentelemetry+api@1.9.0_react-dom@19.2.0_react@19.2.0__react@19.2.0/node_modules/next/dist/server/lib/app-info-log.js:109:5)
+    at async Server.<anonymous> (/home/davi/novo-segundo-site/node_modules/.pnpm/next@15.5.4_@babel+core@7.28.4_@opentelemetry+api@1.9.0_react-dom@19.2.0_react@19.2.0__react@19.2.0/node_modules/next/dist/server/lib/start-server.js:312:41)
+
+Node.js v22.20.0
+[?25h
