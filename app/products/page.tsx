@@ -1,6 +1,7 @@
 import { prisma } from '../../lib/prisma';
 import { Prisma } from '@prisma/client';
 import ProductCard from '../../components/ProductCard';
+import Breadcrumbs from '../../components/Breadcrumbs';
 import Link from 'next/link';
 
 export const metadata = { title: 'Produtos — Agro Mané' };
@@ -85,6 +86,7 @@ export default async function ProductsPage({ searchParams }: any) {
 
   return (
     <div className="space-y-6">
+      <Breadcrumbs items={[{ label: 'Produtos' }]} />
       <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-4">
         <div>
           <h2 className="text-2xl font-bold">Produtos</h2>

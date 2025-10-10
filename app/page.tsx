@@ -4,6 +4,8 @@ import { PawPrint, Waves, Leaf, MessageCircle, MapPin } from 'lucide-react';
 import { prisma } from '../lib/prisma';
 import ProductCard from '../components/ProductCard';
 import Image from 'next/image';
+import Callouts from '../components/Callouts';
+import BrandsStrip from '../components/BrandsStrip';
 
 export const dynamic = 'force-dynamic';
 
@@ -99,6 +101,10 @@ export default async function Home() {
           </div>
         ))}
       </section>
+
+      <Callouts />
+
+      <BrandsStrip />
 
       {/* Categorias populares */}
       <section
