@@ -2,6 +2,7 @@ import { prisma } from '../../lib/prisma';
 import { Prisma } from '@prisma/client';
 import FilterSidebar from '../../components/pet/FilterSidebar';
 import ProductCard from '../../components/pet/ProductCard';
+import SortSelect from '../../components/pet/SortSelect';
 import Link from 'next/link';
 import Breadcrumbs from '../../components/Breadcrumbs';
 
@@ -130,21 +131,10 @@ export default async function PetsPage({
               <label htmlFor="sort-select" className="text-sm">
                 Ordenar:
               </label>
-              <form method="get" className="inline">
-                <select
-                  id="sort-select"
-                  name="sort"
-                  defaultValue={sort}
-                  onChange={(e) => e.currentTarget.form?.submit()}
-                  className="px-3 py-2 rounded border text-sm"
-                >
-                  <option value="newest">Mais recentes</option>
-                  <option value="price_asc">Menor preço</option>
-                  <option value="price_desc">Maior preço</option>
-                  <option value="name_asc">Nome A-Z</option>
-                  <option value="name_desc">Nome Z-A</option>
-                </select>
-              </form>
+              {/* SortSelect é um Client Component que manipula navegação */}
+              <div>
+                <SortSelect defaultSort={sort} />
+              </div>
             </div>
           </div>
 

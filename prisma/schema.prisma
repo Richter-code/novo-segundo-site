@@ -54,7 +54,19 @@ model Product {
   categoryId  String
   brand       Brand?    @relation(fields: [brandId], references: [id])
   brandId     String?
+  reviews     Review[]
   createdAt   DateTime  @default(now())
+}
+
+model Review {
+  id        String   @id @default(cuid())
+  rating    Int      // 1 a 5 estrelas
+  comment   String?
+  productId String
+  product   Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+  userId    String?
+  userName  String?  // Nome do autor da review
+  createdAt DateTime @default(now())
 }
 
 model Cart {
