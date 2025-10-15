@@ -61,7 +61,7 @@ export async function GET(request: NextRequest) {
     // Paginação: define quantidade e offset
     const skip = (page - 1) * pageSize;
 
-    // Consulta ao banco via Prisma com reviews incluídas
+    // Consulta principal (produtos) e total
     const [products, total] = await Promise.all([
       prisma.product.findMany({
         skip,
@@ -69,46 +69,22 @@ export async function GET(request: NextRequest) {
         where,
         orderBy,
         include: {
-          brand: {
-            select: {
-              id: true,
-              name: true,
-            },
-          },
-          category: {
-            select: {
-              id: true,
-              name: true,
-            },
-          },
-          reviews: {
-            select: {
-              rating: true,
-            },
-          },
+          brand: { select: { id: true, name: true } },
+          category: { select: { id: true, name: true } },
         },
       }),
       prisma.product.count({ where }),
     ]);
 
-    // Calcula avgRating para cada produto
-    const productsWithRating = products.map((prod) => {
-      const avgRating =
-        prod.reviews.length > 0
-          ? prod.reviews.reduce((sum, r) => sum + r.rating, 0) /
-            prod.reviews.length
-          : 0;
-
-      return {
-        id: prod.id,
-        name: prod.name,
-        price: Number(prod.price),
-        imageUrl: prod.imageUrl,
-        brand: prod.brand,
-        category: prod.category,
-        avgRating: Number(avgRating.toFixed(1)),
-      };
-    });
+    const productsWithRating = products.map((prod) => ({
+      id: prod.id,
+      name: prod.name,
+      price: Number(prod.price),
+      imageUrl: prod.imageUrl,
+      brand: prod.brand,
+      category: prod.category,
+      avgRating: 0,
+    }));
 
     return NextResponse.json({
       products: productsWithRating,

@@ -1,6 +1,6 @@
 'use client';
 import { useState } from 'react';
-import { useRouter } from 'next/navigation';
+import { useRouter, usePathname } from 'next/navigation';
 import FilterSidebar from '@/components/catalog/FilterSidebar';
 import SortDropdown from '@/components/catalog/SortDropdown';
 import ProductList from '@/components/catalog/ProductList';
@@ -26,6 +26,8 @@ interface CatalogClientProps {
     brandIds: string[];
     sort: string;
   };
+  title?: string;
+  subtitle?: string;
 }
 
 export default function CatalogClient({
@@ -34,8 +36,11 @@ export default function CatalogClient({
   brands,
   initialTotal,
   initialFilters,
+  title = 'Catálogo de Produtos',
+  subtitle = 'Encontre os melhores produtos para seu pet, piscina, jardim e agro',
 }: CatalogClientProps) {
   const router = useRouter();
+  const pathname = usePathname();
 
   const [filters, setFilters] = useState(initialFilters);
   const [products, setProducts] = useState(initialProducts);
@@ -64,7 +69,7 @@ export default function CatalogClient({
     newFilters.brandIds.forEach((id) => params.append('brand', id));
 
     // Atualiza URL
-    router.push(`/catalog?${params.toString()}`, { scroll: false });
+    router.push(`${pathname}?${params.toString()}`, { scroll: false });
 
     // Busca produtos
     try {
@@ -96,7 +101,7 @@ export default function CatalogClient({
     filters.brandIds.forEach((id) => params.append('brand', id));
 
     // Atualiza URL
-    router.push(`/catalog?${params.toString()}`, { scroll: false });
+    router.push(`${pathname}?${params.toString()}`, { scroll: false });
 
     // Busca produtos
     try {
@@ -114,10 +119,8 @@ export default function CatalogClient({
   return (
     <div className="container mx-auto px-4 py-8">
       <div className="mb-8">
-        <h1 className="text-3xl font-bold mb-2">Catálogo de Produtos</h1>
-        <p className="text-muted-foreground">
-          Encontre os melhores produtos para seu pet, piscina, jardim e agro
-        </p>
+        <h1 className="text-3xl font-bold mb-2">{title}</h1>
+        <p className="text-muted-foreground">{subtitle}</p>
       </div>
 
       <div className="flex flex-col md:flex-row gap-6">
@@ -166,7 +169,9 @@ export default function CatalogClient({
             <ProductList
               initialProducts={products}
               filters={filters}
-              hasMore={products.length < total}
+              hasMore={false}
+              currentPage={1}
+              totalPages={Math.max(1, Math.ceil(total / 12))}
             />
           )}
         </div>

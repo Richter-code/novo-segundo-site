@@ -1,7 +1,7 @@
 'use client';
 import Image from 'next/image';
 import { StarIcon } from '@heroicons/react/24/solid';
-import { StarIcon as StarOutlineIcon } from '@heroicons/react/24/outline';
+import { ShoppingCartIcon } from '@heroicons/react/24/outline';
 import Link from 'next/link';
 
 interface ProductCardProps {
@@ -16,94 +16,84 @@ interface ProductCardProps {
 }
 
 export default function ProductCard({ product }: ProductCardProps) {
-  // Cálculo de valor da parcela (ex: em até 12x sem juros)
-  const installmentValue = product.price / 12;
-
-  // Renderizar estrelas de avaliação
-  const renderStars = () => {
-    const stars = [];
-    const fullStars = Math.floor(product.avgRating);
-
-    for (let i = 0; i < 5; i++) {
-      if (i < fullStars) {
-        stars.push(
-          <StarIcon
-            key={i}
-            className="h-4 w-4 text-yellow-500"
-            aria-hidden="true"
-          />,
-        );
-      } else {
-        stars.push(
-          <StarOutlineIcon
-            key={i}
-            className="h-4 w-4 text-gray-300"
-            aria-hidden="true"
-          />,
-        );
-      }
-    }
-    return stars;
-  };
+  const installmentValue = product.price / 10;
+  const hasDiscount = false;
 
   return (
-    <Link href={`/products/${product.id}`}>
-      <div className="group border rounded-lg p-4 hover:shadow-lg transition-shadow bg-card h-full flex flex-col">
-        {/* Imagem do produto */}
-        <div className="relative w-full h-48 mb-3 overflow-hidden rounded-md bg-gray-100">
+    <div className="group bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-lg overflow-hidden hover:shadow-xl transition-all duration-300 flex flex-col h-full">
+      <Link href={`/products/${product.id}`} className="relative block">
+        <div className="relative w-full aspect-square bg-gray-50 dark:bg-gray-800">
           <Image
             src={product.imageUrl}
-            alt={`Imagem de ${product.name}`}
+            alt={product.name}
             fill
-            className="object-cover group-hover:scale-105 transition-transform duration-300"
-            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
+            className="object-contain p-4 group-hover:scale-105 transition-transform duration-300"
+            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
           />
+          {hasDiscount && (
+            <div className="absolute top-2 left-2 bg-red-600 text-white text-xs font-bold px-2 py-1 rounded">
+              -15%
+            </div>
+          )}
         </div>
+      </Link>
 
-        {/* Título e marca */}
-        <h3 className="font-semibold text-sm text-foreground line-clamp-2 mb-1 min-h-[2.5rem]">
-          {product.name}
-        </h3>
+      <div className="p-3 flex flex-col flex-1">
         {product.brand && (
-          <p className="text-xs text-muted-foreground mb-2">
+          <p className="text-xs text-gray-500 dark:text-gray-400 uppercase tracking-wide mb-1">
             {product.brand.name}
           </p>
         )}
 
-        {/* Avaliação em estrelas */}
-        <div className="flex items-center gap-1 mb-2">
-          {renderStars()}
-          <span className="text-xs text-muted-foreground ml-1">
-            ({product.avgRating.toFixed(1)})
-          </span>
-        </div>
+        <Link href={`/products/${product.id}`}>
+          <h3 className="text-sm font-medium text-gray-900 dark:text-gray-100 line-clamp-2 min-h-[2.5rem] mb-2 hover:text-primary transition-colors">
+            {product.name}
+          </h3>
+        </Link>
 
-        {/* Preço e parcelamento */}
-        <div className="mt-auto">
-          <p className="text-lg font-bold text-green-600 dark:text-green-500">
-            R$ {product.price.toFixed(2)}
-          </p>
-          <p className="text-xs text-muted-foreground">
-            em até 12x de{' '}
-            <span className="font-medium">
+        {product.avgRating > 0 && (
+          <div className="flex items-center gap-1 mb-2">
+            {[...Array(5)].map((_, i) => (
+              <StarIcon
+                key={i}
+                className={`h-3 w-3 ${
+                  i < Math.floor(product.avgRating)
+                    ? 'text-yellow-400'
+                    : 'text-gray-300'
+                }`}
+              />
+            ))}
+            <span className="text-xs text-gray-500 ml-1">
+              ({product.avgRating.toFixed(1)})
+            </span>
+          </div>
+        )}
+
+        <div className="mt-auto space-y-1">
+          <div className="flex items-baseline gap-2">
+            <span className="text-2xl font-bold text-gray-900 dark:text-white">
+              R$ {product.price.toFixed(2)}
+            </span>
+          </div>
+          <p className="text-xs text-gray-600 dark:text-gray-400">
+            ou <span className="font-semibold">10x</span> de{' '}
+            <span className="font-semibold text-green-600 dark:text-green-500">
               R$ {installmentValue.toFixed(2)}
-            </span>{' '}
-            sem juros
+            </span>
           </p>
-
-          {/* Botão COMPRAR */}
-          <button
-            onClick={(e) => {
-              e.preventDefault();
-              // TODO: Adicionar ao carrinho
-              alert(`Produto ${product.name} adicionado ao carrinho!`);
-            }}
-            className="mt-3 w-full bg-primary text-primary-foreground text-center text-sm font-medium py-2 rounded hover:bg-primary/90 transition-colors"
-          >
-            COMPRAR
-          </button>
         </div>
+
+        <button
+          onClick={(e) => {
+            e.preventDefault();
+            alert(`${product.name} adicionado ao carrinho!`);
+          }}
+          className="mt-3 w-full bg-green-600 hover:bg-green-700 text-white font-semibold py-2.5 px-4 rounded-md transition-colors duration-200 flex items-center justify-center gap-2 text-sm"
+        >
+          <ShoppingCartIcon className="h-5 w-5" />
+          COMPRAR
+        </button>
       </div>
-    </Link>
+    </div>
   );
 }

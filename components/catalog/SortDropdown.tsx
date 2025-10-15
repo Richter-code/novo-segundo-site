@@ -4,11 +4,11 @@ import { ChevronUpDownIcon, CheckIcon } from '@heroicons/react/24/outline';
 import { Fragment, useState } from 'react';
 
 const sortOptions = [
-  { id: 'newest', label: 'Mais recentes' },
-  { id: 'priceAsc', label: 'Menor preço' },
-  { id: 'priceDesc', label: 'Maior preço' },
-  { id: 'nameAsc', label: 'Nome A–Z' },
-  { id: 'nameDesc', label: 'Nome Z–A' },
+  { id: 'newest', label: 'Mais Relevantes' },
+  { id: 'priceAsc', label: 'Menor Preço' },
+  { id: 'priceDesc', label: 'Maior Preço' },
+  { id: 'nameAsc', label: 'A - Z' },
+  { id: 'nameDesc', label: 'Z - A' },
 ];
 
 interface SortDropdownProps {
