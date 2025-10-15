@@ -1,0 +1,32 @@
+{
+  "products": [
+    {
+      "name": "Ração Premium Cães Adultos 10kg",
+      "description": "Alimento completo e balanceado para cães adultos.",
+      "price": 189.9,
+      "imageUrl": "https://images.unsplash.com/photo-1558944351-c0bcb7ddce78",
+      "category": "Pet"
+    },
+    {
+      "name": "Cloro Granulado 10 kg",
+      "description": "Tratamento de água para piscinas residenciais.",
+      "price": 289.9,
+      "imageUrl": "https://images.unsplash.com/photo-1483721310020-03333e577078",
+      "category": "Piscina"
+    },
+    {
+      "name": "Sementes de Grama Batatais 1 kg",
+      "description": "Cobertura de gramado com alta adaptação.",
+      "price": 49.9,
+      "imageUrl": "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee",
+      "category": "Jardim"
+    },
+    {
+      "name": "Adubo NPK 10-10-10 5 kg",
+      "description": "Fertilizante granulado para diversas culturas.",
+      "price": 79.9,
+      "imageUrl": "https://images.unsplash.com/photo-1615486363878-80f95f4fc3b5",
+      "category": "Agro"
+    }
+  ]
+}

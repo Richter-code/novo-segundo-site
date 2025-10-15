@@ -16,6 +16,8 @@ model User {
   posts     Post[]
   accounts  Account[]
   sessions  Session[]
+  pets       Pet[]        @relation("UserPets")
+  appointments Appointment[] @relation("UserAppointments")
 }
 
 model Post {
@@ -35,6 +37,13 @@ model Category {
   createdAt DateTime  @default(now())
 }
 
+model Brand {
+  id        String    @id @default(cuid())
+  name      String
+  products  Product[]
+  createdAt DateTime  @default(now())
+}
+
 model Product {
   id          String    @id @default(cuid())
   name        String
@@ -43,6 +52,8 @@ model Product {
   imageUrl    String
   category    Category  @relation(fields: [categoryId], references: [id])
   categoryId  String
+  brand       Brand?    @relation(fields: [brandId], references: [id])
+  brandId     String?
   createdAt   DateTime  @default(now())
 }
 
@@ -52,6 +63,77 @@ model Cart {
   items     String
   total     Decimal
   createdAt DateTime @default(now())
+}
+
+// Veterinária / Pets
+
+model Clinic {
+  id            String          @id @default(cuid())
+  name          String
+  address       String?
+  phone         String?
+  imageUrl      String?
+  services      VetService[]
+  veterinarians Veterinarian[]
+  createdAt     DateTime        @default(now())
+  @@unique([name])
+}
+
+model Veterinarian {
+  id        String  @id @default(cuid())
+  name      String
+  specialty String?
+  clinic    Clinic? @relation(fields: [clinicId], references: [id])
+  clinicId  String?
+  createdAt DateTime @default(now())
+  @@unique([name, clinicId])
+}
+
+model ServiceCategory {
+  id        String      @id @default(cuid())
+  name      String
+  services  VetService[]
+  createdAt DateTime    @default(now())
+  @@unique([name])
+}
+
+model VetService {
+  id              String           @id @default(cuid())
+  name            String
+  description     String
+  price           Decimal
+  durationMinutes Int
+  category        ServiceCategory? @relation(fields: [categoryId], references: [id])
+  categoryId      String?
+  clinic          Clinic?          @relation(fields: [clinicId], references: [id])
+  clinicId        String?
+  createdAt       DateTime         @default(now())
+  appointments    Appointment[]
+  @@unique([name, clinicId])
+}
+
+model Pet {
+  id        String     @id @default(cuid())
+  name      String
+  species   String     @default("OTHER")
+  breed     String?
+  owner     User?      @relation("UserPets", fields: [ownerId], references: [id])
+  ownerId   String?
+  createdAt DateTime   @default(now())
+  appointments Appointment[]
+}
+
+model Appointment {
+  id          String            @id @default(cuid())
+  service     VetService        @relation(fields: [serviceId], references: [id])
+  serviceId   String
+  pet         Pet               @relation(fields: [petId], references: [id])
+  petId       String
+  owner       User?             @relation("UserAppointments", fields: [ownerId], references: [id])
+  ownerId     String?
+  scheduledAt DateTime
+  status      String            @default("PENDING")
+  createdAt   DateTime          @default(now())
 }
 
 // NextAuth models (Prisma Adapter)

@@ -1,4 +1,5 @@
 import Card from '../components/Card';
+import Link from 'next/link';
 import Button from '../components/Button';
 import { PawPrint, Waves, Leaf, MessageCircle, MapPin } from 'lucide-react';
 import { prisma } from '../lib/prisma';
@@ -6,6 +7,7 @@ import ProductCard from '../components/ProductCard';
 import Image from 'next/image';
 import Callouts from '../components/Callouts';
 import BrandsStrip from '../components/BrandsStrip';
+import InstagramStrip from '../components/InstagramStrip';
 
 export const dynamic = 'force-dynamic';
 
@@ -33,14 +35,41 @@ export default async function Home() {
   const waText = encodeURIComponent(
     'Olá! Gostaria de mais informações sobre produtos e serviços da Agro Mané.',
   );
-  const [featured, categories] = await Promise.all([
-    prisma.product.findMany({
-      orderBy: { createdAt: 'desc' },
-      take: 8,
-      include: { category: true },
-    }),
-    prisma.category.findMany({ orderBy: { name: 'asc' }, take: 6 }),
-  ]);
+  let featured: Array<{
+    id: string;
+    name: string;
+    description?: string;
+    price?: { toString: () => string };
+    imageUrl?: string;
+    category?: { name?: string };
+  }> = [];
+  let categories: Array<{ id: string; name: string }> = [];
+  try {
+    const res = await Promise.all([
+      prisma.product.findMany({
+        orderBy: { createdAt: 'desc' },
+        take: 8,
+        include: { category: true },
+      }),
+      prisma.category.findMany({ orderBy: { name: 'asc' }, take: 6 }),
+    ]);
+    featured = res[0];
+    categories = res[1];
+  } catch (err: unknown) {
+    // Em alguns ambientes o banco pode estar desatualizado (coluna imageUrl ausente).
+    // Evitamos quebrar o site: retornamos listas vazias e logamos o erro no servidor.
+    // Se desejar aplicar migração, rode `npx prisma migrate dev` localmente.
+    // eslint-disable-next-line no-console
+    console.error('Prisma query failed on Home:', err);
+    try {
+      categories = await prisma.category.findMany({
+        orderBy: { name: 'asc' },
+        take: 6,
+      });
+    } catch {
+      categories = [];
+    }
+  }
   return (
     <div className="space-y-12">
       {/* Hero */}
@@ -106,6 +135,8 @@ export default async function Home() {
 
       <BrandsStrip />
 
+      <InstagramStrip />
+
       {/* Categorias populares */}
       <section
         aria-label="Categorias — Pet, Piscina e Jardim"
@@ -113,7 +144,13 @@ export default async function Home() {
       >
         <h2 className="text-xl font-bold">Categorias</h2>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          <Card title="Pet">
+          <Card
+            title={
+              <Link href="/pet" className="hover:underline">
+                Pet
+              </Link>
+            }
+          >
             <div className="flex items-start gap-3">
               <PawPrint
                 className="h-5 w-5 mt-0.5 text-emerald-600"
@@ -125,7 +162,13 @@ export default async function Home() {
               </p>
             </div>
           </Card>
-          <Card title="Piscina">
+          <Card
+            title={
+              <Link href="/piscina" className="hover:underline">
+                Piscina
+              </Link>
+            }
+          >
             <div className="flex items-start gap-3">
               <Waves className="h-5 w-5 mt-0.5 text-sky-600" aria-hidden />
               <p>
@@ -134,7 +177,13 @@ export default async function Home() {
               </p>
             </div>
           </Card>
-          <Card title="Jardim / Agro">
+          <Card
+            title={
+              <Link href="/jardim-agro" className="hover:underline">
+                Jardim / Agro
+              </Link>
+            }
+          >
             <div className="flex items-start gap-3">
               <Leaf className="h-5 w-5 mt-0.5 text-green-700" aria-hidden />
               <p>
@@ -183,8 +232,8 @@ export default async function Home() {
                 key={p.id}
                 id={p.id}
                 name={p.name}
-                price={p.price.toString()}
-                imageUrl={p.imageUrl}
+                price={(p.price?.toString && p.price.toString()) || '0.00'}
+                imageUrl={p.imageUrl || '/favicon.svg'}
                 description={p.category?.name}
               />
             ))}

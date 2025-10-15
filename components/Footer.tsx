@@ -1,5 +1,6 @@
 'use client';
 import NewsletterForm from './NewsletterForm';
+import { siteConfig, waLink } from '../lib/site';
 
 export default function Footer() {
   return (
@@ -8,17 +9,18 @@ export default function Footer() {
         <div className="grid md:grid-cols-4 gap-8">
           <div className="space-y-2">
             <div className="font-semibold">Atendimento</div>
-            <div>Seg a Sex - 09:00 às 17:30</div>
+            <div>{siteConfig.hours}</div>
             <div>
-              <a href="tel:+551933000000" className="hover:underline">
-                (19) 3300-0000
+              <a
+                href={`tel:${siteConfig.supportPhone}`}
+                className="hover:underline"
+              >
+                {siteConfig.supportPhone}
               </a>
             </div>
             <div>
               <a
-                href={`https://wa.me/${
-                  process.env.NEXT_PUBLIC_WHATSAPP_PHONE || '5519999999999'
-                }`}
+                href={waLink()}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="hover:underline"
@@ -28,10 +30,10 @@ export default function Footer() {
             </div>
             <div>
               <a
-                href="mailto:contato@agromane.com.br"
+                href={`mailto:${siteConfig.supportEmail}`}
                 className="hover:underline"
               >
-                contato@agromane.com.br
+                {siteConfig.supportEmail}
               </a>
             </div>
           </div>
@@ -102,6 +104,48 @@ export default function Footer() {
           <p className="mt-1">
             7 lojas em Piracicaba-SP | Tudo para Pet, Piscina e Jardim
           </p>
+          <div className="mt-2 flex items-center justify-center gap-4 text-xs">
+            {siteConfig.socials.instagram ? (
+              <a
+                href={siteConfig.socials.instagram}
+                target="_blank"
+                rel="noreferrer"
+                className="hover:underline"
+              >
+                Instagram
+              </a>
+            ) : null}
+            {siteConfig.socials.facebook ? (
+              <a
+                href={siteConfig.socials.facebook}
+                target="_blank"
+                rel="noreferrer"
+                className="hover:underline"
+              >
+                Facebook
+              </a>
+            ) : null}
+            {siteConfig.socials.youtube ? (
+              <a
+                href={siteConfig.socials.youtube}
+                target="_blank"
+                rel="noreferrer"
+                className="hover:underline"
+              >
+                YouTube
+              </a>
+            ) : null}
+            {siteConfig.socials.tiktok ? (
+              <a
+                href={siteConfig.socials.tiktok}
+                target="_blank"
+                rel="noreferrer"
+                className="hover:underline"
+              >
+                TikTok
+              </a>
+            ) : null}
+          </div>
         </div>
       </div>
     </footer>

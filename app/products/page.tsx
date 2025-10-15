@@ -1,5 +1,6 @@
 import { prisma } from '../../lib/prisma';
 import { Prisma } from '@prisma/client';
+import type { Product } from '@prisma/client';
 import ProductCard from '../../components/ProductCard';
 import Breadcrumbs from '../../components/Breadcrumbs';
 import Link from 'next/link';
@@ -9,36 +10,23 @@ export const dynamic = 'force-dynamic';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export default async function ProductsPage({ searchParams }: any) {
-  const q = (
-    Array.isArray(searchParams?.q) ? searchParams?.q[0] : searchParams?.q
-  )
-    ?.toString()
-    ?.trim();
+  // Next.js may provide async searchParams — await it before using its properties
+  const sp = await searchParams;
+
+  const q = (Array.isArray(sp?.q) ? sp?.q[0] : sp?.q)?.toString()?.trim();
   const category = (
-    Array.isArray(searchParams?.category)
-      ? searchParams?.category[0]
-      : searchParams?.category
+    Array.isArray(sp?.category) ? sp?.category[0] : sp?.category
   )
     ?.toString()
     ?.trim();
   const sort =
-    (Array.isArray(searchParams?.sort)
-      ? searchParams?.sort[0]
-      : searchParams?.sort
-    )
-      ?.toString()
-      ?.trim() || 'newest';
+    (Array.isArray(sp?.sort) ? sp?.sort[0] : sp?.sort)?.toString()?.trim() ||
+    'newest';
   const page =
-    Number(
-      (Array.isArray(searchParams?.page)
-        ? searchParams?.page[0]
-        : searchParams?.page) ?? '1',
-    ) || 1;
+    Number((Array.isArray(sp?.page) ? sp?.page[0] : sp?.page) ?? '1') || 1;
   const pageSize = 24;
 
-  const categories = await prisma.category.findMany({
-    orderBy: { name: 'asc' },
-  });
+  // Construir filtro 'where' dinamicamente
   const where: Prisma.ProductWhereInput = {};
   const and: Prisma.ProductWhereInput[] = [];
   if (q) {
@@ -51,7 +39,8 @@ export default async function ProductsPage({ searchParams }: any) {
   }
   if (and.length) where.AND = and;
 
-  let orderBy: Prisma.ProductOrderByWithRelationInput;
+  // Order by
+  let orderBy: Prisma.ProductOrderByWithRelationInput = { createdAt: 'desc' };
   switch (sort) {
     case 'price_asc':
       orderBy = { price: 'asc' };
@@ -69,16 +58,38 @@ export default async function ProductsPage({ searchParams }: any) {
       orderBy = { createdAt: 'desc' };
   }
 
-  const [total, products] = await Promise.all([
-    prisma.product.count({ where }),
-    prisma.product.findMany({
-      where,
-      include: { category: true },
-      orderBy,
-      take: pageSize,
-      skip: Math.max(0, (page - 1) * pageSize),
-    }),
-  ]);
+  // Resultados com tratamento para falhas de banco/desatualização
+  let categories: Array<{ id: string; name: string }> = [];
+  let products: Array<Product & { category?: { id: string; name: string } }> =
+    [];
+  let total = 0;
+
+  try {
+    // buscar categorias para o filtro
+    categories = await prisma.category.findMany({ orderBy: { name: 'asc' } });
+
+    // contar e buscar produtos paginados
+    const [count, rows] = await Promise.all([
+      prisma.product.count({ where }),
+      prisma.product.findMany({
+        where,
+        include: { category: true },
+        orderBy,
+        take: pageSize,
+        skip: Math.max(0, (page - 1) * pageSize),
+      }),
+    ]);
+
+    total = count;
+    products = rows;
+  } catch (err: unknown) {
+    // Banco possivelmente desatualizado ou ausente. Logamos e continuamos com listas vazias.
+    // eslint-disable-next-line no-console
+    console.error('Prisma query failed on Products page:', err);
+    categories = [];
+    products = [];
+    total = 0;
+  }
 
   const totalPages = Math.max(1, Math.ceil(total / pageSize));
   const prevPage = page > 1 ? page - 1 : 1;
@@ -148,8 +159,8 @@ export default async function ProductsPage({ searchParams }: any) {
             id={p.id}
             name={p.name}
             description={p.description}
-            price={p.price.toString()}
-            imageUrl={p.imageUrl}
+            price={(p.price ?? 0).toString()}
+            imageUrl={p.imageUrl ?? ''}
           />
         ))}
       </div>

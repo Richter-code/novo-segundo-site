@@ -48,6 +48,11 @@ async function main() {
     { name: 'Equipamentos' },
     { name: 'Consultoria' },
     { name: 'Serviços' },
+    // lojista
+    { name: 'Pet' },
+    { name: 'Piscina' },
+    { name: 'Jardim' },
+    { name: 'Agro' },
   ];
 
   await prisma.category.createMany({ data: categoriesData });
@@ -134,7 +139,124 @@ async function main() {
 
   await prisma.product.createMany({ data: products });
 
-  console.log('Seed concluído: categorias e produtos inseridos.');
+  // Inserir produtos de exemplo para as páginas temáticas (Pet, Piscina, Jardim/Agro)
+  async function ensureCategory(name: string) {
+    const found = await prisma.category.findFirst({ where: { name } });
+    if (found) return found;
+    return prisma.category.create({ data: { name } });
+  }
+
+  const pet = await ensureCategory('Pet');
+  const piscina = await ensureCategory('Piscina');
+  const jardim = await ensureCategory('Jardim');
+  const agro = await ensureCategory('Agro');
+
+  async function ensureProduct(
+    name: string,
+    categoryId: string,
+    data: { description: string; price: string | number; imageUrl: string },
+  ) {
+    const exists = await prisma.product.findFirst({
+      where: { name, categoryId },
+    });
+    if (exists) return exists;
+    const { description, price, imageUrl } = data;
+    return prisma.product.create({
+      data: { name, description, price, imageUrl, categoryId },
+    });
+  }
+
+  await ensureProduct('Ração Premium Cães Adultos 10kg', pet.id, {
+    description: 'Alimento completo e balanceado para cães adultos.',
+    price: '189.90',
+    imageUrl: 'https://images.unsplash.com/photo-1558944351-c0bcb7ddce78',
+  });
+  await ensureProduct('Cloro Granulado 10 kg', piscina.id, {
+    description: 'Tratamento de água para piscinas residenciais.',
+    price: '289.90',
+    imageUrl: 'https://images.unsplash.com/photo-1483721310020-03333e577078',
+  });
+  await ensureProduct('Sementes de Grama Batatais 1 kg', jardim.id, {
+    description: 'Cobertura de gramado com alta adaptação.',
+    price: '49.90',
+    imageUrl: 'https://images.unsplash.com/photo-1500530855697-b586d89ba3ee',
+  });
+  await ensureProduct('Adubo NPK 10-10-10 5 kg', agro.id, {
+    description: 'Fertilizante granulado para diversas culturas.',
+    price: '79.90',
+    imageUrl: 'https://images.unsplash.com/photo-1615486363878-80f95f4fc3b5',
+  });
+
+  // Clínicas (mantém para compatibilidade, mas não usado no seed atual)
+  await prisma.clinic.upsert({
+    where: { name: 'Clínica Vet Agromane' },
+    update: {},
+    create: {
+      name: 'Clínica Vet Agromane',
+      address: 'Av. Central, 123',
+      phone: '(11) 5555-0000',
+      imageUrl: 'https://images.unsplash.com/photo-1568572933382-74d440642117',
+    },
+  });
+
+  // Skip veterinary service categories for now (not in current schema focus)
+  /*
+  await prisma.serviceCategory.createMany({
+    data: [
+      { name: 'Consultas' },
+      { name: 'Vacinação' },
+      { name: 'Exames' },
+      { name: 'Banho & Tosa' },
+    ],
+  })
+
+  const svcCatList = await prisma.serviceCategory.findMany()
+  const svcByName: Record<string, { id: string }> = Object.fromEntries(
+    svcCatList.map((c: { id: string; name: string }) => [c.name, { id: c.id }])
+  )
+
+  // Serviços veterinários
+  await prisma.vetService.createMany({
+    data: [
+      { name: 'Consulta Geral', description: 'Avaliação clínica completa.', price: '120.00', durationMinutes: 30, clinicId: clinic.id, categoryId: svcByName['Consultas'].id },
+      { name: 'Vacina V10', description: 'Vacinação polivalente canina.', price: '90.00', durationMinutes: 20, clinicId: clinic.id, categoryId: svcByName['Vacinação'].id },
+      { name: 'Exame de Sangue', description: 'Hemograma completo.', price: '150.00', durationMinutes: 25, clinicId: clinic.id, categoryId: svcByName['Exames'].id },
+      { name: 'Banho & Tosa Completo', description: 'Higienização e tosa higiênica.', price: '100.00', durationMinutes: 60, clinicId: clinic.id, categoryId: svcByName['Banho & Tosa'].id },
+    ],
+  })
+
+  // Veterinários
+  await prisma.veterinarian.createMany({
+    data: [
+      { name: 'Dra. Ana Silva', specialty: 'Clínica Geral', clinicId: clinic.id },
+      { name: 'Dr. Bruno Souza', specialty: 'Dermatologia', clinicId: clinic.id },
+    ],
+  })
+
+  // Pets e agendamentos
+  const buddy = await prisma.pet.upsert({
+    where: { id: 'pet_buddy' },
+    update: {},
+    create: { id: 'pet_buddy', name: 'Buddy', species: 'DOG', breed: 'Labrador', ownerId: admin.id },
+  })
+  const luna = await prisma.pet.upsert({
+    where: { id: 'pet_luna' },
+    update: {},
+    create: { id: 'pet_luna', name: 'Luna', species: 'CAT', breed: 'Siamês', ownerId: admin.id },
+  })
+
+  const services = await prisma.vetService.findMany({ take: 2 })
+  if (services.length > 0) {
+    await prisma.appointment.createMany({
+      data: [
+        { serviceId: services[0].id, petId: buddy.id, ownerId: admin.id, scheduledAt: new Date(Date.now() + 86400000), status: 'CONFIRMED' },
+        { serviceId: services[1].id, petId: luna.id, ownerId: admin.id, scheduledAt: new Date(Date.now() + 2 * 86400000), status: 'PENDING' },
+      ],
+    })
+  }
+  */
+
+  console.log('Seed concluído: categorias, produtos, clínica.');
 }
 
 main()
